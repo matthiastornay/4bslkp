@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <title>4-bands SL /k.p/</title>
+
+    <!-- Application icon -->
+    <link rel="icon" href="radio-waves.png">
+
+    <!-- Latest Pyodide version (@6 Janv. 2026) -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.29.0/full/pyodide.js"></script>
+
+    <!-- CSS File -->
+    <link rel="stylesheet" href="stylesheet.css">
+
+  </head>
+
+  <body>
+    <div id="loading-overlay">
+      <div id="loading-text">Loading modules...</div>
+    </div>
+
+    <header class="header">
+      <h1><em>4-bands SL </em><span>\(k \cdot p\)</span></h1>
+    </header>
+
+    <!-- MathJax import -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>
+
+    <div id="main-layout">
+
+      <!-- Left panel -->
+      <div id="left-panel">
+
+        <label class="label">Layer 1:</label>
+
+        <div class="controls">
+          <div class="multiselect" id="layer1Select">
+
+            <div class="selectBox">
+              <span id="layer1SelectSpan">Material</span>
+              <div class="arrow">▾</div>
+            </div>
+
+            <div class="checkboxes">
+              <label><input type="radio" name="layer1Material" value="GaAs">GaAs</label>
+              <label><input type="radio" name="layer1Material" value="AlAs">AlAs</label>
+              <label><input type="radio" name="layer1Material" value="InAs">InAs</label>
+              <label><input type="radio" name="layer1Material" value="GaSb">GaSb</label>
+              <label><input type="radio" name="layer1Material" value="AlSb">AlSb</label>
+              <label><input type="radio" name="layer1Material" value="InSb">InSb</label>
+
+              <label><input type="radio" name="layer1Material" value="In(1-x)Ga(x)As">In(1-x)Ga(x)As</label>
+              <label><input type="radio" name="layer1Material" value="InAs(1-x)Sb(x)">InAs(1-x)Sb(x)</label>
+              <label><input type="radio" name="layer1Material" value="Al(1-x)Ga(x)As">Al(1-x)Ga(x)As</label>
+              <label><input type="radio" name="layer1Material" value="Al(1-x)In(x)As">Al(1-x)In(x)As</label>
+              <label><input type="radio" name="layer1Material" value="Al(1-x)In(x)Sb">Al(1-x)In(x)Sb</label>
+              <label><input type="radio" name="layer1Material" value="AlAs(1-x)Sb(x)">AlAs(1-x)Sb(x)</label>
+              <label><input type="radio" name="layer1Material" value="Al(1-x)Ga(x)Sb">Al(1-x)Ga(x)Sb</label>
+              <label><input type="radio" name="layer1Material" value="GaAs(1-x)Sb(x)">GaAs(1-x)Sb(x)</label>
+              <label><input type="radio" name="layer2Material" value="Ga(1-x)In(x)Sb">Ga(1-x)In(x)Sb</label>
+            </div>
+
+            <div class="input-group">
+              <label class="label">x:
+                <input id="compoL1" class="input" type="number" value="0.00" step="0.01" min="0.00" max="1.00">
+              </label>
+            </div>
+
+          </div>
+        </div>
+
+        <label class="label">Layer 2:</label>
+        
+        <div class="controls">
+          <div class="multiselect" id="layer2Select">
+
+            <div class="selectBox">
+              <span id="layer2SelectSpan">Material</span>
+              <div class="arrow">▾</div>
+            </div>
+
+            <div class="checkboxes">
+              <label><input type="radio" name="layer2Material" value="GaAs">GaAs</label>
+              <label><input type="radio" name="layer2Material" value="AlAs">AlAs</label>
+              <label><input type="radio" name="layer2Material" value="InAs">InAs</label>
+              <label><input type="radio" name="layer2Material" value="GaSb">GaSb</label>
+              <label><input type="radio" name="layer2Material" value="AlSb">AlSb</label>
+              <label><input type="radio" name="layer2Material" value="InSb">InSb</label>
+
+              <label><input type="radio" name="layer2Material" value="In(1-x)Ga(x)As">In(1-x)Ga(x)As</label>
+              <label><input type="radio" name="layer2Material" value="InAs(1-x)Sb(x)">InAs(1-x)Sb(x)</label>
+              <label><input type="radio" name="layer2Material" value="Al(1-x)Ga(x)As">Al(1-x)Ga(x)As</label>
+              <label><input type="radio" name="layer2Material" value="Al(1-x)In(x)As">Al(1-x)In(x)As</label>
+              <label><input type="radio" name="layer2Material" value="Al(1-x)In(x)Sb">Al(1-x)In(x)Sb</label>
+              <label><input type="radio" name="layer2Material" value="AlAs(1-x)Sb(x)">AlAs(1-x)Sb(x)</label>
+              <label><input type="radio" name="layer2Material" value="Al(1-x)Ga(x)Sb">Al(1-x)Ga(x)Sb</label>
+              <label><input type="radio" name="layer2Material" value="GaAs(1-x)Sb(x)">GaAs(1-x)Sb(x)</label>
+              <label><input type="radio" name="layer2Material" value="Ga(1-x)In(x)Sb">Ga(1-x)In(x)Sb</label>
+            </div>
+
+            <div class="input-group">
+              <label class="label">x:
+                <input id="compoL2" class="input" type="number" value="0.00" step="0.01" min="0.00" max="1.00">
+              </label>
+            </div>
+
+          </div>
+        </div>
+
+        <span>————————————————————</span>
+
+        <div class="input-group" id="inasBlock">
+          <label class="label">Layer thick. (nm):
+            <input id="th_layer1" class="input" type="number" value="4.1" step="0.1" min="0.0">
+            <input id="th_layer2" class="input" type="number" value="1.4" step="0.1" min="0.0">
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="label">δ_strain (eV):
+            <input id="strain_layer1" class="input" type="number" value="0.000" step="0.001">
+            <input id="strain_layer2" class="input" type="number" value="0.000" step="0.001">
+          </label>
+        </div>
+
+        <span>————————————————————</span>
+
+        <div class="input-group" id="Block">
+          <label class="label">Γ bow. (eV):
+            <input id="Gamma_bow_1" class="input" type="number" value="" step="0.05">
+            <input id="Gamma_bow_2" class="input" type="number" value="" step="0.05">
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="label">VB bow. (eV):
+            <input id="Vb_bow_1" class="input" type="number" value="" step="0.05">
+            <input id="Vb_bow_2" class="input" type="number" value="" step="0.05">
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="label">ΔSO (eV):
+            <input id="D_SO_1" class="input" type="number" value="" step="0.01">
+            <input id="D_SO_2" class="input" type="number" value="" step="0.01">
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="label">\(E_{P}\) \((eV)\):
+            <input id="Ep_1" class="input" type="number" value="" min="0.0" step="0.01">
+            <input id="Ep_2" class="input" type="number" value="" min="0.0" step="0.01">
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="label">\(m_{e}\) \((m_0)\):
+            <input id="me_1" class="input" type="number" value="" min="0.0" step="0.001">
+            <input id="me_2" class="input" type="number" value="" min="0.0" step="0.001">
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="label">\(m_{hh}\) \((m_0)\):
+            <input id="mhh_1" class="input" type="number" value="" min="0.0" step="0.001">
+            <input id="mhh_2" class="input" type="number" value="" min="0.0" step="0.001">
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="label">\(m_{lh}\) \((m_0)\):
+            <input id="mlh_1" class="input" type="number" value="" min="0.0" step="0.001">
+            <input id="mlh_2" class="input" type="number" value="" min="0.0" step="0.001">
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="label">\(m_{so}\) \((m_0)\):
+            <input id="mso_1" class="input" type="number" value="" min="0.0" step="0.001">
+            <input id="mso_2" class="input" type="number" value="" min="0.0" step="0.001">
+          </label>
+        </div>
+
+        <span>————————————————————</span>
+
+        <div class="input-group">
+          <label class="label">Temperature (K):
+            <input id="temperature" class="input" type="number" value="80" step="5" min="0">
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="label">Δz (nm):
+            <input id="dz" class="input" type="number" value="0.1" step="0.05" min="0.05">
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="label">Number of k points:
+            <input id="nk" class="input" type="number" value="15" step="5" min="5">
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="label">Emin / Emax (eV):
+            <input id="Emin" class="input" type="number" value="-0.2" step="0.1">
+            <input id="Emax" class="input" type="number" value="0.8" step="0.1">
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="container">Profil custom
+            <input type="checkbox" id="customLinescan">
+            <div class="checkmark"></div>
+          </label>
+        </div>
+       
+        <div class="controls" id="csvBlock">
+          <label class="label">Configuration CSV :</label>
+          <input type="file" id="csvfile" accept=".csv" style="width: 100%;" disabled> <!-- Sort files to show only '.csv' ones -->
+        </div>
+
+
+        <span>————————————————————</span>
+
+        <div class="input-group">
+          <label class="container">E
+            <input type="checkbox" id="E_plot" checked>
+            <div class="checkmark"></div>
+          </label>
+          <label class="container">HH
+            <input type="checkbox" id="HH_plot" checked>
+            <div class="checkmark"></div>
+          </label>
+          <label class="container">LH
+            <input type="checkbox" id="LH_plot" checked>
+            <div class="checkmark"></div>
+          </label>
+          <label class="container">SO
+            <input type="checkbox" id="SO_plot">
+            <div class="checkmark"></div>
+          </label>
+        </div>
+
+        <span>————————————————————</span>
+
+        <div class="controls">
+          <button id="Btn_loadDatabase">Load database</button>
+        </div>
+
+        <div class="controls" id="buttonCompoBlock" disabled>
+          <button id="Btn_plotCompositions">Plot compositions</button>
+        </div>
+
+        <div class="controls">
+          <button id="Btn_plotHeterostructure">Plot heterostructure</button>
+          <div id="status_H" style="display:none;">
+            <span class="spinner"></span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="Btn_calculateDispersion">Calculate dispersion</button>
+          <div id="status_D" style="display:none;">
+            <span class="spinner"></span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right panel -->
+      <div id="right-panel">
+        <pre id="output"> 
+          <span> 08/01/2026 : suite clean code + quelques ajouts cosmétiques sur l'interface </span>
+          <span> 07/01/2026 : suite cleaning et refonte fonctions build_kp4, Ben Danie-Dukel et dérivée première ; ajout d'options Emin/Emax sur l'interface </span>
+          <span> 06/01/2026 : essai concluant avec Github Pages + début de cleaning du code en vue de mise en ligne. </span>
+          <span> 05/01/2026 : ajout d'options pour choisir les bandes à plot </span>
+          <span> 05/01/2026 : ajout d'un bouton pour load la database une fois les matériaux choisis.</span>
+          <span> 05/01/2026 : modifications sur l'interface utilisateur. </span>
+          <span> 05/01/2026 : correction d'un bug dans le calcul de la masse effective en BC</span>
+          <span> 30/12/2025 : implémentation partielle choix binaire/ternaire ou ternaire custom. </span>
+          <span> 30/12/2025 : ajout d'un prise en compte de la contrainte via des paramètres ajustables pour séparer HH et LH. </span>
+          <span> 30/12/2025 : modification de l'architecture du code pour la diviser en sous-fichiers plus faciles à maintenir.</span>
+
+          <span> TODOS : </span>
+          <span>   - corriger bug "asynchronous reponse return true" et ferme le channel si calcul trop long (26/12/2025).</span>
+          <span>   - griser layer2 si un profil custom est sélectionné et rediriger les calculs avec ses propriétés (28/12/2025)</span>
+          <span>   - ajouter une exception pour qu'il ne soit pas possible de lancer le code en n'ayant pas au moins sélectionné Layer1/Layer2 ou Layer1/CSV (28/12/2028)</span>
+          <span>   - résoudre le problème des offsets avec la contrainte, peut-être en remettant les Vc/Vh ? Sinon incorporer plus finelement la strain (05/01/2026) </span>
+        </pre>
+
+        <div id="figures"></div>
+      </div>
+
+    </div>
+
+    <!-- Rechargement automatiquement avec type=module sans chercher à contourner le cache -->
+    <script type="module">
+      import('./js/main.js?v=' + Date.now());
+    </script>
+
+  </body>
+</html>

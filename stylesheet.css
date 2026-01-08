@@ -1,0 +1,354 @@
+/**************************************************************
+  Gestion de l'overlay de chargement des modules au démarrage
+***************************************************************/
+
+#loading-overlay {
+  position: fixed; /* couvre toute la fenêtre */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85); /* voile noir à 85% */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* au dessus de tous les autres éléments */
+}
+
+#loading-text {
+  color: white;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+
+/******************
+  Style du header
+******************/
+
+.header {
+  width: 100%;
+  padding: 20px 0;
+
+  background-color: #1a1a1a;
+  color: white;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  font-family: sans-serif;
+}
+
+.header h1 {
+  margin: 0; /* évite shift du texte */
+  font-size: 2em;
+  font-weight: bold;
+  text-align: left;
+  padding-left: 20px;
+}
+
+
+
+/***************************************
+  Style des menus déroulants matériaux
+****************************************/
+
+.multiselect {
+  position: relative;
+  width: 50%;
+  font-size: 0.85rem;
+}
+
+.selectBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  background: #fff;
+}
+
+
+
+/*******************************
+  Style des checkbox matériaux
+********************************/
+
+.checkboxes {
+  display: none;
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  margin-top: 0.25rem;
+  padding: 0.5rem;
+}
+
+.checkboxes label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+
+/********************************
+  Style et animation des inputs  
+*********************************/
+    
+.input {
+  max-width: 190px;
+  height: 44px;
+  background-color: #05060f0a;
+  border-radius: .5rem;
+  padding: 0 1rem;
+  border: 2px solid transparent;
+  font-size: 1rem;
+  transition: border-color .3s cubic-bezier(.25,.01,.25,1) 0s, color .3s cubic-bezier(.25,.01,.25,1) 0s,background .2s cubic-bezier(.25,.01,.25,1) 0s;
+}
+
+.label {
+  display: block;
+  margin-bottom: .3rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #05060f99;
+  transition: color .3s cubic-bezier(.25,.01,.25,1) 0s;
+}
+
+.input:hover, .input:focus, .input-group:hover .input {
+  outline: none;
+  border-color: #05060f;
+}
+.input-group:hover .label, .input:focus {
+  color: #05060fc2;
+}
+
+
+.container input {
+  display: none; /* cache la checkbox par défaut pour la remplacer plus loin */
+}
+
+.container { 
+  display: block;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  margin-bottom: .3rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #05060f99;
+  transition: color .3s cubic-bezier(.25,.01,.25,1) 0s;
+}
+
+/* custom checkbox */
+.checkmark {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 1.3em;
+  width: 1.3em;
+  background-color: #2196F300;
+  border-radius: 0.25em;
+  transition: all 0.25s;
+}
+
+.container input:checked ~ .checkmark { 
+  background-color: #2196F3; /* background bleu lorsque la checkbox est checked */
+}
+
+/* crée l'indicateur (hidden lorsque pas checke) */
+.checkmark:after { 
+  content: "";
+  position: absolute;
+  transform: rotate(0deg);
+  border: 0.1em solid black;
+  left: 0;
+  top: 0;
+  width: 1.05em;
+  height: 1.05em;
+  border-radius: 0.25em;
+  transition: all 0.25s, border-width 0.1s;
+}
+
+/* fait apparaître .checkmark lorsque checked */
+.container input:checked ~ .checkmark:after { 
+  left: 0.45em;
+  top: 0.25em;
+  width: 0.25em;
+  height: 0.5em;
+  border-color: #fff0 white white #fff0;
+  border-width: 0 0.15em 0.15em 0;
+  border-radius: 0em;
+  transform: rotate(45deg);
+}
+
+
+body {
+  font-family: sans-serif;
+  margin: 0; /* supprime le margin auto */
+  padding: 20px; /* espace autour du contenu */
+}
+
+button {
+  margin-top: 20px;
+}
+pre {
+  background: #f4f4f4;
+  padding: 10px;
+}
+
+input {
+  width: 100px;
+  box-sizing: border-box;
+  text-align: right;
+
+}
+
+
+
+/*********************************
+  Style et animation des boutons  
+**********************************/
+
+
+button {
+ padding: 15px 25px;
+ border: unset;
+ border-radius: 15px;
+ color: #212121;
+ z-index: 1;
+ background: #e8e8e8;
+ position: relative;
+ font-weight: 1000;
+ font-size: 17px;
+ -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+ box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+ transition: all 250ms;
+ overflow: hidden;
+}
+
+button::before {
+ content: "";
+ position: absolute;
+ top: 0;
+ left: 0;
+ height: 100%;
+ width: 0;
+ border-radius: 15px;
+ background-color: #212121;
+ z-index: -1;
+ -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+ box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+ transition: all 250ms
+}
+button:hover {
+ color: #e8e8e8;
+}
+button:hover::before {
+ width: 100%;
+}
+
+.controls {
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+
+
+/********************************************
+  Style et animation du spinner des boutons
+*********************************************/
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #ccc;
+  border-top: 2px solid #333;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+
+/**********************************************
+  Style général des left-panel et right-panel
+***********************************************/
+
+#main-layout {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+  align-items: flex-start;
+}
+
+#left-panel {
+  width: 320px; /* largeur fixe pour définir le panneau gauche */
+  flex-shrink: 0;
+  border-right: 20px solid #1a1a1a;
+  padding-right: 15px;
+}
+
+#right-panel {
+  flex: 1; /* tout l'espace restant à droite */
+  min-width: 0;
+  margin-top: 0;
+  margin-left: 15px;
+}
+
+
+
+/****************************************************
+  Style des outputs texte et figures du right-panel
+*****************************************************/
+
+#output {
+  white-space: pre-wrap;
+  margin-bottom: 20px;
+  margin-top: 0px;
+}
+
+#figures img,
+#figures canvas {
+  max-width: 100%;
+  display: block;
+  margin-top: 0; /* supprime marges implicites matplotlib */
+}
+
+
+
+/**************************************
+  Blocage selon conditions du main.js
+***************************************/
+
+#buttonCompoBlock.disabled,
+#inasBlock.disabled,
+#inassbBlock.disabled,
+#csvBlock.disabled {
+  opacity: 0.6;
+  pointer-events: none; /* empêche toute interaction */
+}
+
+input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.input-group label {
+  display: flex;
+  justify-content: space-between; /* espace entre texte et input */
+  align-items: center;            /* aligne verticalement */
+}
